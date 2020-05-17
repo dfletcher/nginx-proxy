@@ -1,0 +1,40 @@
+version: '3.5'
+
+networks:
+    public_network:
+        name: public_network
+        driver: bridge
+
+services:
+
+    proxy:
+        image: jwilder/nginx-proxy
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - certs:/etc/nginx/certs
+            - vhostd:/etc/nginx/vhost.d
+            - html:/usr/share/nginx/html
+            - ./proxy.conf:/etc/nginx/conf.d/public_network.conf:ro
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+        networks:
+            - public_network
+
+    letsencrypt:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        volumes:
+            - certs:/etc/nginx/certs
+            - vhostd:/etc/nginx/vhost.d
+            - html:/usr/share/nginx/html
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        environment:
+            - DEFAULT_EMAIL=youremail@address.com
+            - NGINX_PROXY_CONTAINER=nginx-proxy
+        networks:
+            - public_network
+
+volumes:
+    certs:
+    vhostd:
+    html:
