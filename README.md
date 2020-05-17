@@ -7,7 +7,10 @@ Requires docker-compose 3.5+
 
 This project is a minimum configuration launcher for the excellent combination of https://hub.docker.com/r/jwilder/nginx-proxy/ and https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/
 
-You can add nginx configuration options to proxy.conf.
+You can add nginx configuration options to `proxy.conf`.
+
+This launcher is used by the development environment described in the blog post [Drupal on Docker: The definitive guide](#TODOFIXME) from [MonkeysAtKeyboards](https://monkeysatkeyboards.com).
+
 
 ## Usage
 
