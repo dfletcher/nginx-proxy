@@ -9,11 +9,44 @@ This project is a minimum configuration launcher for the excellent combination o
 
 You can add nginx configuration options to `proxy.conf`.
 
-This launcher is used by the development environment described in the blog post [Drupal on Docker: The definitive guide](#TODOFIXME) from [MonkeysAtKeyboards](https://monkeysatkeyboards.com).
-
-
 ## Usage
 
     $ git clone https://github.com/dfletcher/nginx-proxy
     $ cd nginx-proxy
     $ docker-compose up -d
+
+## Project docker-compose.yml
+
+A docker-compose.yml file using `nginx-proxy` might look something like this:
+
+    version: '3.5'
+
+    services:
+
+        web:
+            build:
+                context: .
+            networks:
+                - public_network
+                - private_network
+            volumes:
+                - ./:/app
+            environment:
+                - VIRTUAL_HOST=website.com
+                - LETSENCRYPT_HOST=website.com
+
+        mysqldb:
+            image: mariadb
+            networks:
+                - private_network
+            command: --default-authentication-plugin=mysql_native_password
+            restart: always
+
+    networks:
+        public_network:
+            external:
+                name: public_network
+        private_network:
+            driver: bridge
+
+For local development, invent a domain name that does not exist and use that value for VIRTUAL_HOST. Also put the newly invented domain name in your local system hosts file.
