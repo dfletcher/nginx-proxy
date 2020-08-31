@@ -9,6 +9,7 @@ services:
 
     proxy:
         image: jwilder/nginx-proxy
+        restart: unless-stopped
         ports:
             - 80:80
             - 443:443
@@ -23,6 +24,7 @@ services:
 
     letsencrypt:
         image: jrcs/letsencrypt-nginx-proxy-companion
+        restart: unless-stopped
         volumes:
             - certs:/etc/nginx/certs
             - vhostd:/etc/nginx/vhost.d
